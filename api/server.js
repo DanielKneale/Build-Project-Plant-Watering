@@ -6,7 +6,7 @@ const KnexSessionStore = require("connect-session-knex")(session)
 
 const config = {
     name:'sessionId',
-    secret:'keep it secret',
+    secret:'Top Secret',
     cookie:{
         maxAge: 1000 * 60 * 60,
         secure:false,
@@ -24,9 +24,15 @@ const config = {
     })
 }
 
+const authRouter = require('./auth/authRouter')
+
 const server = express()
 
 server.use(helmet());
 server.use(cors())
 server.use(express.json())
 server.use(session(config))
+
+server.use('/api/auth', authRouter)
+
+module.exports = server;
