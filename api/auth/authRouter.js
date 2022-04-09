@@ -15,7 +15,7 @@ function makeToken(user){
     return jwt.sign(payload,JWT_SECRET, options)
 }
 
-router.post('/register',checkPayLoad,checkUserInDb, async (req, res) => {
+router.post('/register', async (req, res) => {
   console.log("register")
   try{
     const hash = bcrypt.hashSync(req.body.password,BCRYPT_ROUNDS)
