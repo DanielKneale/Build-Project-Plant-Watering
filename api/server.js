@@ -35,7 +35,7 @@ server.use(express.json())
 server.use(session(config))
 
 server.use('/auth', authRouter)
-server.use('/plants',restricted,userRouter )
+// server.use('/plants',restricted,userRouter )
 
 server.get('/', (req, res) => {
     res.status(200).json("You've connected")

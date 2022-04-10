@@ -17,7 +17,6 @@ function makeToken(user){
 }
 
 router.post('/register',checkPayLoadReg,checkUserAvailability, async (req, res) => {
-  console.log("register")
   try{
     const hash = bcrypt.hashSync(req.body.password,BCRYPT_ROUNDS)
     const userInfo = await add({username:req.body.username,phone:req.body.phone,password:hash})
