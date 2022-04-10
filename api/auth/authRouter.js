@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const bcrypt = require("bcrypt")
-const { add, findBy } = require("../users/users-model");
+const { add, findBy } = require("../users/userModel");
 const jwt = require("jsonwebtoken")
 const { BCRYPT_ROUNDS, JWT_SECRET } = require('../../config')
 
@@ -12,7 +12,7 @@ function makeToken(user){
     const options = {
       expiresIn:"500s"
     }
-    return jwt.sign(payload,JWT_SECRET, options)
+    return jwt.sign(payload,JWT_SECRET,options)
 }
 
 router.post('/register', async (req, res) => {
@@ -22,18 +22,18 @@ router.post('/register', async (req, res) => {
     const userInfo = await add({username:req.body.username,phone:req.body.phone,password:hash})
     res.status(201).json(userInfo)
   }catch(e){
-    res.status(500).json(`Server errpr: ${e.message}`)
+    res.status(500).json(`Server error: ${e.message}`)
   }
 });
 
 router.post('/login', (req, res) => {
   let {username, password} = req.body
-  const verified = bcrypt.compareSync(password, req.userData.password) 
   findBy({username})
     .then(([user])=>{
+      const verified = bcrypt.compareSync(password, user.password) 
       if(verified){
         const token = makeToken(user)
-        res.status(200).json({message:`Welcome, ${req.userData.username}`,token})
+        res.status(200).json({message:`Welcome, ${user.username}`,token})
       }else{
         res.status(401).json("username or password incorrect")
       }

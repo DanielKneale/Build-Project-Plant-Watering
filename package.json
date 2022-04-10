@@ -1,6 +1,10 @@
 {
   "scripts":{
-    "start": "node index.js"
+    "start": "node index.js",
+    "server": "nodemon index.js",
+    "ml": "knex migrate:latest",
+    "mr": "knex migrate:rollback",
+    "seed": "knex seed:run"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",

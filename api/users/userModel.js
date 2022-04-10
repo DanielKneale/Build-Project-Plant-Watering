@@ -8,11 +8,17 @@ module.exports = {
 }
 
 function find() {
-  return db('users').select('id', 'username','phoneNumber')
+  return db('users').select('id', 'username','phone')
 }
 
 function findBy(filter) {
   return db('users').where(filter)
+}
+
+function findById(id) {
+  return db('users')
+    .where({ id })
+    .first()
 }
 
 async function add(user) {
@@ -21,8 +27,3 @@ async function add(user) {
   return findById(id)
 }
 
-function findById(id) {
-  return db('users')
-    .where({ id })
-    .first()
-}

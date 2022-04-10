@@ -33,6 +33,10 @@ server.use(cors())
 server.use(express.json())
 server.use(session(config))
 
-server.use('/api/auth', authRouter)
+server.use('/auth', authRouter)
+
+server.get('/', (req, res) => {
+    res.status(200).json("You've connected")
+  })
 
 module.exports = server;

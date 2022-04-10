@@ -3,7 +3,7 @@ exports.up = function (knex) {
       .createTable('users', users => {
         users.increments("id");
         users.string('username', 255).notNullable().unique();
-        users.string('phoneNumber',10).notNullable().unique();
+        users.string('phone',10).notNullable().unique();
         users.string('password', 255).notNullable();
     })
     .createTable("plants",tbl=>{
