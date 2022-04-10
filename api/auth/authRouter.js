@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt")
 const { add, findBy } = require("../users/userModel");
 const jwt = require("jsonwebtoken")
 const { BCRYPT_ROUNDS, JWT_SECRET } = require('../../config')
+const { checkPayLoadReg,checkLoginInfo,checkUserAvailability  } = require("../middleware/authMiddle")
 
 function makeToken(user){
     const payload = {
@@ -15,7 +16,7 @@ function makeToken(user){
     return jwt.sign(payload,JWT_SECRET,options)
 }
 
-router.post('/register', async (req, res) => {
+router.post('/register',checkPayLoadReg,checkUserAvailability, async (req, res) => {
   console.log("register")
   try{
     const hash = bcrypt.hashSync(req.body.password,BCRYPT_ROUNDS)
@@ -26,7 +27,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-router.post('/login', (req, res) => {
+router.post('/login',checkLoginInfo, (req, res) => {
   let {username, password} = req.body
   findBy({username})
     .then(([user])=>{
