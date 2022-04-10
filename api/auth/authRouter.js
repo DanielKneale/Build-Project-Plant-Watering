@@ -33,7 +33,7 @@ router.post('/login', (req, res) => {
       const verified = bcrypt.compareSync(password, user.password) 
       if(verified){
         const token = makeToken(user)
-        res.status(200).json({message:`Welcome, ${user.username}`,token})
+        res.status(200).json({message:`Welcome, ${user.username}`,token})//remove token later
       }else{
         res.status(401).json("username or password incorrect")
       }

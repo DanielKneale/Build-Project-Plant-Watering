@@ -3,7 +3,7 @@ const cors = require('cors')
 const helmet = require('helmet')
 const session = require('express-session')
 const KnexSessionStore = require("connect-session-knex")(session)
-
+const {restricted} = require('./middleware/authMiddle')
 const config = {
     name:'sessionId',
     secret:'Top Secret',
@@ -25,6 +25,7 @@ const config = {
 }
 
 const authRouter = require('./auth/authRouter')
+const userRouter = require('./users/userRouter')
 
 const server = express()
 
@@ -34,9 +35,12 @@ server.use(express.json())
 server.use(session(config))
 
 server.use('/auth', authRouter)
+server.use('/plants',restricted,userRouter )
 
 server.get('/', (req, res) => {
     res.status(200).json("You've connected")
   })
+
+  
 
 module.exports = server;
