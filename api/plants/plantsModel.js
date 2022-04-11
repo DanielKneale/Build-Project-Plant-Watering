@@ -6,6 +6,7 @@ module.exports = {
     findById,
     findUsersPlants,
     remove,
+    edit
 }
 
 
@@ -33,4 +34,9 @@ async function remove(id) {
     const deletedPlant = await findById(id)
     await db("plants").where("id",id).delete()
     return deletedPlant
+}
+
+async function edit(id,{nickname,species,h2oFrequency}) {
+    await db("plants").where("id",id).update({nickname,species,h2oFrequency})
+    return findById(id)
 }

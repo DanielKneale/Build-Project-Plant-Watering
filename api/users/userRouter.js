@@ -1,4 +1,4 @@
-const {findUsersPlants, add, remove} = require("../plants/plantsModel")
+const {findUsersPlants, add, remove, edit} = require("../plants/plantsModel")
 const {checkOwnsPlant} = require('../middleware/authMiddle')
 const router = require('express').Router();
 
@@ -19,14 +19,19 @@ router.post('/:userid', async (req, res) =>{
 })
 
 router.put('/:userid/:plantid',checkOwnsPlant, async (req,res) =>{
-
+  try {
+    const editedPlant = await edit(req.params.plantid, req.body)
+    res.json(editedPlant)
+  } catch(e) {
+    res.status(500).json(`Server error: ${e.message}`)
+  }
 })
 
 router.delete('/:userid/:plantid',checkOwnsPlant, async (req,res) => {
   try {
     const removedPlant = await remove(req.params.plantid)
     res.json(removedPlant)
-  } catch (e) {
+  } catch(e) {
     res.status(500).json(`Server error: ${e.message}`)
   }
 })
