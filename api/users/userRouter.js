@@ -18,14 +18,14 @@ router.post('/:userid', async (req, res) =>{
   }
 })
 
-// router.put('/:userid' async (req,res) =>{
+router.put('/:userid/:plantid',checkOwnsPlant, async (req,res) =>{
 
-// })
+})
 
 router.delete('/:userid/:plantid',checkOwnsPlant, async (req,res) => {
   try {
-    const data = await remove(req.params.plantid)
-    res.json(data)
+    const removedPlant = await remove(req.params.plantid)
+    res.json(removedPlant)
   } catch (e) {
     res.status(500).json(`Server error: ${e.message}`)
   }
