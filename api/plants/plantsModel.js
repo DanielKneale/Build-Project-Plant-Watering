@@ -18,9 +18,9 @@ function findById(id) {
     .first()
 }
 
-function findUsersPlants(username,owner) {
-    return db('plants as p').join('users as u').select()
-    .where(owner === username)
+function findUsersPlants(username) {
+    return db('plants').select('nickname','species','h2oFrequency')
+    .where('owner', username)
 }
 
 async function add(plant) {
