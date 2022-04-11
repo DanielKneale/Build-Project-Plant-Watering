@@ -1,4 +1,5 @@
-const {findUsersPlants, add} = require("../plants/plantsModel")
+const {findUsersPlants, add, remove} = require("../plants/plantsModel")
+const {checkOwnsPlant} = require('../middleware/authMiddle')
 const router = require('express').Router();
 
 router.get('/:userid', async (req, res) => {
@@ -13,6 +14,19 @@ router.post('/:userid', async (req, res) =>{
     const newPlant = await add({nickname:req.body.nickname,species:req.body.species,h2oFrequency:req.body.h2oFrequency,owner:req.params.userid})
     res.status(201).json(newPlant)
   }catch(e){
+    res.status(500).json(`Server error: ${e.message}`)
+  }
+})
+
+// router.put('/:userid' async (req,res) =>{
+
+// })
+
+router.delete('/:userid/:plantid',checkOwnsPlant, async (req,res) => {
+  try {
+    const data = await remove(req.params.plantid)
+    res.json(data)
+  } catch (e) {
     res.status(500).json(`Server error: ${e.message}`)
   }
 })

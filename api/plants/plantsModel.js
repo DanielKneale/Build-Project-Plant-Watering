@@ -4,7 +4,8 @@ module.exports = {
     add,
     find,
     findById,
-    findUsersPlants
+    findUsersPlants,
+    remove,
 }
 
 
@@ -18,9 +19,9 @@ function findById(id) {
     .first()
 }
 
-function findUsersPlants(username) {
-    return db('plants').select('nickname','species','h2oFrequency')
-    .where('owner', username)
+function findUsersPlants(userId) {
+    return db('plants').select('id','nickname','species','h2oFrequency')
+    .where('owner', userId)
 }
 
 async function add(plant) {
@@ -28,3 +29,8 @@ async function add(plant) {
     return findById(id)
 }
 
+async function remove(id) {
+    const deletedPlant = await findById(id)
+    await db("plants").where("id",id).delete()
+    return deletedPlant
+}

@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken")
 const { JWT_SECRET } = require("../../config")
-const { findBy } = require("../users/userModel")
+const { findBy, findById } = require("../users/userModel")
+const plantMod = require("../plants/plantsModel")
 
 const restricted = (req,res,next)=>{
     const token = req.headers.authorization
@@ -47,10 +48,25 @@ const checkUserAvailability = async (req,res,next)=>{
       res.status(500).json(`server error:: ${e.message}`)
     }
   }
+// compare the id to match the foriegn key
+  const checkOwnsPlant = async (req,res,next) => {
+    try{
+      const user = await findById(req.params.userid)
+      const plant = await plantMod.findById(req.params.plantid)
+      if(user.id === plant.owner){
+        next()
+      }else{
+        res.status(401).json("Woops thats not your plant")
+      }
+    }catch(e){
+      res.status(500).json(`server error:: ${e.message}`)
+    }
+  }
 
  module.exports = {
     restricted,
     checkPayLoadReg,
     checkLoginInfo,
-    checkUserAvailability
+    checkUserAvailability,
+    checkOwnsPlant
  }

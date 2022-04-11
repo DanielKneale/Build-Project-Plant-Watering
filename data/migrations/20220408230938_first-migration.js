@@ -11,7 +11,7 @@ exports.up = function (knex) {
         tbl.string("nickname",128).notNullable()
         tbl.string("species ",128).notNullable()
         tbl.string("h2oFrequency",128).notNullable()
-        tbl.string("owner")
+        tbl.integer("owner")
             .unsigned()
             .notNullable()
             .references("id")
