@@ -5,6 +5,7 @@ module.exports = {
   find,
   findBy,
   findById,
+  edit
 }
 
 function find() {
@@ -24,6 +25,11 @@ function findById(id) {
 async function add(user) {
   const [id] = await db('users').insert(user)
 
+  return findById(id)
+}
+
+async function edit(id,{phone,password}) {
+  await db("users").where("id",id).update({phone,password})
   return findById(id)
 }
 
